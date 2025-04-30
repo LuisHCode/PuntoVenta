@@ -1,6 +1,0 @@
-CREATE TABLE usuario (
-    rol INT NOT NULL,
-    passw VARCHAR(255) CHARACTER_SET utf8mb4 COLLATE utf8mb4_spanish_ci NOT NULL,
-    ultimmoAcceso DATETIME DEFAULT NULL,
-    tkR VARCHAR(255)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_spanish_ci;

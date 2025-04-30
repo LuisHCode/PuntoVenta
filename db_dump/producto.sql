@@ -35,6 +35,10 @@ SET time_zone = "+00:00";
 -- Base de datos: `sistema-pos`
 --
 
+
+
+
+
 --
 -- Estructura de tabla para la tabla `categorias`
 --
@@ -409,6 +413,24 @@ INSERT INTO `venta_detalle` (`id`, `nro_boleta`, `codigo_producto`, `cantidad`, 
 -- Índices para tablas volcadas
 --
 
+
+CREATE TABLE usuario (
+    id int NOT NULL,
+    id_usuario VARCHAR(15) NOT NULL,
+    correo VARCHAR(100) NOT NULL ,
+    rol int NOT NULL,
+    passw varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_spanish_ci NOT NULL,
+    ulttimoAcceso datetime DEFAULT NULL,
+    tkR varchar(255) NULL
+)ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_spanish_ci;
+
+ALTER TABLE usuario
+    ADD PRIMARY KEY (id),
+    ADD UNIQUE KEY idx_Usuario (id_usuario);
+
+ALTER TABLE usuario
+    MODIFY id int(11) NOT NULL AUTO_INCREMENT;
+
 --
 -- Indices de la tabla `categorias`
 --
@@ -477,3 +499,5 @@ COMMIT;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+
+
