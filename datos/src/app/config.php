@@ -2,9 +2,9 @@
 $container->set('config_bd',function(){
     return(object)[
         "host"=>"db",
-        "db"=> "ventas",
+        "db"=> "taller",
         "usr"=> "root",
-        "passw"=>"12345",
+        "passw"=>"123456",
         "charset"=> "utf8mb4"
 
     ];

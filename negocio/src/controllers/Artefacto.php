@@ -1,96 +1,66 @@
 <?php
-namespace App\controllers;
+    namespace App\controllers;
 
-use Psr\Http\Message\ResponseInterface as Response;
-use Psr\Http\Message\ServerRequestInterface as Request;
-use Psr\Container\ContainerInterface;
-use PDO;
+    use Psr\Http\Message\ResponseInterface as Response;
+    use Psr\Http\Message\ServerRequestInterface as Request;
+    use Psr\Container\ContainerInterface;
 
-class Artefacto {
-    protected $container;
+    use PDO;
 
-    public function __construct(ContainerInterface $c){
-        $this->container = $c;
-    }
+    class Artefacto extends ServicioCURL{
+        protected $container;
+        private const ENDPOINT= '/artefacto';
 
-    public function read(Request $request, Response $response, $args){
-        $sql = "SELECT * FROM artefacto";
-        if(isset($args['id'])){
-            $sql .= " WHERE id = :id";
-        }
-        $con = $this->container->get('base_datos');
-        $query = $con->prepare($sql);
-
-        if(isset($args['id'])){
-            $query->execute(['id' => $args['id']]);
-        } else {
-            $query->execute();
+        public function __construct(ContainerInterface $c){
+            $this->container = $c;
         }
 
-        $res = $query->fetchAll();
-        $status = $query->rowCount() > 0 ? 200 : 204;
+        public function read(Request $request, Response $response, $args){
+          
+            $url= $this::ENDPOINT . '/read';
+            if(isset($args['id'])){
+                $url .= '/'.$args['id'];
+            }
+            //die($url);
+            $respA = $this->ejecutarCURL($url, 'GET');
 
-        $response->getBody()->write(json_encode($res));
-        return $response->withHeader('Content-Type', 'application/json')->withStatus($status);
+            $response->getbody()->write($respA['resp']);
+            return $response
+                ->withHeader('Content-Type', 'application/json')
+                ->withStatus($respA['status']);
+        }
+
+        public function create(Request $request, Response $response, $args){
+            
+            $body= $request->getBody();
+            
+            $respA = $this->ejecutarCURL($this::ENDPOINT, 'POST', $body);
+
+            return $response ->withStatus($respA['status']);
+        }
+
+        public function update(Request $request, Response $response, $args){
+            $uri= '/' . $args['id'];
+            $body= $request->getBody();
+            $respA = $this->ejecutarCURL($this::ENDPOINT . $uri, 'PUT', $body);
+            return $response ->withStatus($respA['status']);
+        }
+
+        public function delete(Request $request, Response $response, $args){
+            $uri= '/' . $args['id'];
+            $respA = $this->ejecutarCURL($this::ENDPOINT . $uri, 'DELETE');
+            return $response ->withStatus($respA['status']);
+        }
+
+        public function filtrar(Request $request, Response $response, $args){
+
+            $uri= "/filtrar/{$args['pag']}/{$args['lim']}?" .
+            http_build_query($request->getQueryParams());
+
+            $respA = $this->ejecutarCURL($this::ENDPOINT . $uri, 'GET');
+            $response->getbody()->write($respA['resp']);
+            return $response ->withStatus($respA['status']);
+           
+        }
+
     }
-
-    public function create(Request $request, Response $response){
-        $body = json_decode($request->getBody());
-
-        $sql = "INSERT INTO artefacto (id, idCliente, serie, marca, modelo, categoria, descripcion) 
-                VALUES (:id, :idCliente, :serie, :marca, :modelo, :categoria, :descripcion)";
-
-        $con = $this->container->get('base_datos');
-        $query = $con->prepare($sql);
-        $ok = $query->execute([
-            'id' => $body->id,
-            'idCliente' => $body->idCliente,
-            'serie' => $body->serie,
-            'marca' => $body->marca,
-            'modelo' => $body->modelo,
-            'categoria' => $body->categoria,
-            'descripcion' => $body->descripcion
-        ]);
-
-        $response->getBody()->write(json_encode(["success" => $ok]));
-        return $response->withHeader('Content-Type', 'application/json');
-    }
-
-    public function update(Request $request, Response $response, $args){
-        $body = json_decode($request->getBody());
-
-        $sql = "UPDATE artefacto SET 
-                idCliente = :idCliente,
-                serie = :serie,
-                marca = :marca,
-                modelo = :modelo,
-                categoria = :categoria,
-                descripcion = :descripcion
-                WHERE id = :id";
-
-        $con = $this->container->get('base_datos');
-        $query = $con->prepare($sql);
-        $ok = $query->execute([
-            'id' => $args['id'],
-            'idCliente' => $body->idCliente,
-            'serie' => $body->serie,
-            'marca' => $body->marca,
-            'modelo' => $body->modelo,
-            'categoria' => $body->categoria,
-            'descripcion' => $body->descripcion
-        ]);
-
-        $response->getBody()->write(json_encode(["updated" => $ok]));
-        return $response->withHeader('Content-Type', 'application/json');
-    }
-
-    public function delete(Request $request, Response $response, $args){
-        $sql = "DELETE FROM artefacto WHERE id = :id";
-        $con = $this->container->get('base_datos');
-        $query = $con->prepare($sql);
-        $ok = $query->execute(['id' => $args['id']]);
-
-        $response->getBody()->write(json_encode(["deleted" => $ok]));
-        return $response->withHeader('Content-Type', 'application/json');
-    }
-}

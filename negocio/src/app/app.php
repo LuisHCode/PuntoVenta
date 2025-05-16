@@ -1,16 +1,18 @@
 <?php
+   
+    use Slim\Factory\AppFactory;
 
-use Slim\Factory\AppFactory;
-use DI\Container;
+    use DI\Container;
 
-require __DIR__ . '/../../vendor/autoload.php';
+    require __DIR__ . '/../../vendor/autoload.php';
 
-$container = new Container();
-AppFactory::setContainer($container);
+    $container = new Container();
 
-$app = AppFactory::create();
+    AppFactory::SetContainer($container);
+    
+    $app = AppFactory::create();
 
+    require "routes.php";
+    
 
-require "routes.php";
-
-$app->run();
+    $app->run();
