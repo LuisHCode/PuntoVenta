@@ -46,6 +46,23 @@ CREATE TABLE cliente (
   UNIQUE KEY idx_Correo (correo)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
+DROP TABLE IF EXISTS administrador;
+CREATE TABLE administrador (
+  id int(11) NOT NULL AUTO_INCREMENT,  
+  idAdministrador Varchar(15) NOT NULL,
+  nombre Varchar (30) COLLATE utf8_spanish_ci NOT NULL,
+  apellido1 Varchar (15) COLLATE utf8_spanish_ci NOT NULL,
+  apellido2 Varchar (15) COLLATE utf8_spanish_ci NOT NULL,
+  telefono Varchar (9) NOT NULL,
+  celular Varchar (9),
+  direccion Varchar (255) COLLATE utf8_spanish_ci,
+  correo Varchar (100) NOT NULL,
+  fechaIngreso Datetime DEFAULT now(),
+  PRIMARY KEY (id),
+  UNIQUE KEY idx_Administrador (idAdministrador),
+  UNIQUE KEY idx_Correo (correo)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
+
 DROP TABLE IF EXISTS usuario;
 CREATE TABLE usuario (
   id int(11) NOT NULL AUTO_INCREMENT,  

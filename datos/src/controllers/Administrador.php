@@ -7,7 +7,7 @@
 
     use PDO;
 
-    class Cliente{
+    class Administrador{
         protected $container;
         private const ROL= 4;
 
@@ -16,7 +16,7 @@
         }
 
         public function read(Request $request, Response $response, $args){
-            $sql= "SELECT * FROM cliente ";
+            $sql= "SELECT * FROM administrador ";
 
             if(isset($args['id'])){
                 $sql.="WHERE id = :id ";
@@ -49,7 +49,7 @@
             
             $body= json_decode($request->getBody());
 
-            $sql = "SELECT nuevoCliente(:idCliente,:nombre,:apellido1,:apellido2,:telefono,:celular,:direccion,:correo);";
+            $sql = "SELECT nuevoAdministrador(:idAdministrador,:nombre,:apellido1,:apellido2,:telefono,:celular,:direccion,:correo);";
 
             $con=  $this->container->get('base_datos');
             $con->beginTransaction();
@@ -77,7 +77,7 @@
                 //var_dump($status);
                 //die();
 
-                $id = $body->idCliente;
+                $id = $body->idAdministrador;
 
                 $sql = "SELECT nuevoUsuario(:idUsuario, :rol, :passw);";
 
@@ -113,7 +113,7 @@
         public function update(Request $request, Response $response, $args){
       
             $body= json_decode($request->getBody());
-            $sql = "SELECT editarCliente(:id,:idCliente,:nombre,:apellido1,:apellido2,:telefono,:celular,:direccion,:correo);";
+            $sql = "SELECT editarAdministrador(:id,:idAdministrador,:nombre,:apellido1,:apellido2,:telefono,:celular,:direccion,:correo);";
 
             $con=  $this->container->get('base_datos');
             $con->beginTransaction();
@@ -153,11 +153,10 @@
            
         }
 
-        
-        public function delete(Request $request, Response $response, $args){
+       public function delete(Request $request, Response $response, $args){
             
 
-            $sql = "SELECT eliminarCliente(:id);";
+            $sql = "SELECT eliminarAdministrador(:id);";
             $con=  $this->container->get('base_datos');
 
             $query = $con->prepare($sql);
@@ -175,7 +174,7 @@
             return $response ->withStatus($status);
         }
 
-        public function filtrar(Request $request, Response $response, $args){
+          public function filtrar(Request $request, Response $response, $args){
             // %serie%&%modelo%&%marca%&%categoria%&
 
             $datos= $request->getQueryParams();
@@ -185,7 +184,7 @@
             }
             $filtro= substr($filtro, 0, -1);
 
-            $sql="CALL filtrarCliente('$filtro', {$args['pag']},{$args['lim']});";
+            $sql="CALL filtrarAdministrador('$filtro', {$args['pag']},{$args['lim']});";
 
             $con=  $this->container->get('base_datos');
             $query = $con->prepare($sql);
@@ -209,7 +208,6 @@
                 ->withHeader('Content-Type', 'application/json')
                 ->withStatus($status);
         }
-
 
 
     }

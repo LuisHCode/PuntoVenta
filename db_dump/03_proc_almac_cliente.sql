@@ -16,7 +16,7 @@ CREATE PROCEDURE filtrarCliente (
     _pagina SMALLINT UNSIGNED, 
     _cantRegs SMALLINT UNSIGNED)
 begin
-    SELECT cadenaFiltro(_parametros, 'idCliente&nombre&apellido1&apellido2&') INTO @filtro;
+    SELECT cadenaFiltro(_parametros, 'idCliente&nombre&apellido1&apellido2&correo') INTO @filtro;
     SELECT concat("SELECT * from cliente where ", @filtro, " LIMIT ", 
         _pagina, ", ", _cantRegs) INTO @sql;
     PREPARE stmt FROM @sql;
@@ -94,19 +94,14 @@ CREATE FUNCTION eliminarCliente (_id INT(1)) RETURNS INT(1)
 begin
     declare _cant int;
     declare _resp int;
-    set _resp = 0;
+    SELECT 0 into _resp;
     select count(id) into _cant from cliente where id = _id;
     if _cant > 0 then
-        set _resp = 1;
-        select count(id) into _cant from artefacto where idCliente = _id;
-        if _cant = 0 then
-            delete from cliente where id = _id;
-        else 
-            -- select 2 into _resp;
-            set _resp = 2;
-        end if;
+        delete from cliente where id = _id;
+        select 1 into _resp;
     end if;
     return _resp;
 end$$
+
 
 DELIMITER ;
