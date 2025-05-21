@@ -72,9 +72,10 @@ CREATE FUNCTION editarCliente (
     _correo  Varchar (100)
     ) RETURNS INT(1) 
 begin
-    declare _cant int;
-    select count(id) into _cant from cliente where id = _id;
-    if _cant > 0 then
+    declare no_encontrado int default 0;
+    if NOT EXISTS(SELECT id FROM cliente WHERE id = _id) then
+        set no_encontrado = 1;
+    else
         update cliente set
             idCliente = _idCliente,
             nombre = _nombre,
@@ -86,7 +87,7 @@ begin
             correo = _correo
         where id = _id;
     end if;
-    return _cant;
+    return no_encontrado;
 end$$
 
 DROP FUNCTION IF EXISTS eliminarCliente$$
@@ -94,14 +95,35 @@ CREATE FUNCTION eliminarCliente (_id INT(1)) RETURNS INT(1)
 begin
     declare _cant int;
     declare _resp int;
-    SELECT 0 into _resp;
+    set _resp = 0;
     select count(id) into _cant from cliente where id = _id;
     if _cant > 0 then
-        delete from cliente where id = _id;
-        select 1 into _resp;
+        set _resp = 1;
+        select count(id) into _cant from artefacto where idCliente = _id;
+        if _cant = 0 then
+            delete from cliente where id = _id;
+        else 
+            -- select 2 into _resp;
+            set _resp = 2;
+        end if;
     end if;
     return _resp;
 end$$
 
+DROP TRIGGER IF EXISTS actualizar_cliente$$
+CREATE TRIGGER actualizar_cliente AFTER UPDATE ON cliente FOR EACH ROW
+BEGIN
+    UPDATE usuario 
+        SET idUsuario = NEW.idCliente,
+            correo = NEW.correo
+        WHERE idUsuario = OLD.idCliente;
+END$$
 
+
+DROP TRIGGER IF EXISTS eliminar_cliente$$
+CREATE TRIGGER eliminar_cliente AFTER DELETE ON cliente FOR EACH ROW
+BEGIN
+    DELETE FROM usuario
+        WHERE idUsuario = OLD.idCliente;        
+END$$
 DELIMITER ;

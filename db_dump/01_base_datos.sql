@@ -67,6 +67,7 @@ DROP TABLE IF EXISTS usuario;
 CREATE TABLE usuario (
   id int(11) NOT NULL AUTO_INCREMENT,  
   idUsuario Varchar(15) NOT NULL,
+  correo VARCHAR(100),
   rol int not NULL,
   passw varchar(255) not NULL,
   ultimoAcceso Datetime,
