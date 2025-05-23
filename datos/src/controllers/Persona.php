@@ -109,7 +109,7 @@ class Persona
                 1 => 404,
                 0 => 200,
             };
-        } catch (\PDOException $e) {            
+        } catch (\PDOException $e) {
             $status = $e->getCode() == 23000 ? 409 : 500;
             $con->rollBack();
         }
@@ -118,4 +118,48 @@ class Persona
         return $status;
     }
 
+
+    public function deleteP($recurso, $id)
+    {
+
+        $sql = "SELECT eliminar$recurso(:id);";
+
+        $con = $this->container->get('base_datos');
+
+        $query = $con->prepare($sql);
+
+        $query->bindValue(':id', filter_var($id, FILTER_SANITIZE_SPECIAL_CHARS), PDO::PARAM_INT);
+        $query->execute();
+        $res = $query->fetch(PDO::FETCH_NUM)[0];
+
+        $status = $res > 0 ? 200 : 404;
+
+        $query = null;
+        $con = null;
+
+        return $status;
+    }
+
+    public function filtrarP($recurso, $datos, $pag, $lim)
+    {
+        $filtro = "%";
+        foreach ($datos as $key => $value) {
+            $filtro .= "$value%&%";
+        };
+        $filtro = substr($filtro, 0, -1);
+        $sql = "CALL filtrar$recurso('$filtro', {$pag},{$lim});";
+
+
+        $con = $this->container->get('base_datos');
+        $query = $con->prepare($sql);
+
+        $query->execute();
+        $res = $query->fetchAll();
+
+        $status = $query->rowCount() > 0 ? 200 : 204;
+
+        $query = null;
+        $con = null;
+        return ["datos" => $res, "status" => $status];
+    }
 }

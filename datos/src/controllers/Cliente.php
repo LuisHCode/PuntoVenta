@@ -66,60 +66,17 @@ class Cliente extends Persona
 
     public function delete(Request $request, Response $response, $args)
     {
-
-
-        $sql = "SELECT eliminarCliente(:id);";
-        $con = $this->container->get('base_datos');
-
-        $query = $con->prepare($sql);
-
-        $query->bindValue('id', $args['id'], PDO::PARAM_INT);
-        $query->execute();
-
-        $resp = $query->fetch(PDO::FETCH_NUM)[0];
-
-        $status = $resp > 0 ? 200 : 404;
-
-        $query = null;
-        $con = null;
-
+        $body = json_decode($request->getBody(), 1);
+        $status = $this->deleteP(self::RECURSO, $args['id']);
         return $response->withStatus($status);
     }
 
     public function filtrar(Request $request, Response $response, $args)
     {
-        // %serie%&%modelo%&%marca%&%categoria%&
-
         $datos = $request->getQueryParams();
-        $filtro = "%";
-        foreach ($datos as $key => $value) {
-            $filtro .= "$value%&%";
-        }
-        $filtro = substr($filtro, 0, -1);
-
-        $sql = "CALL filtrarCliente('$filtro', {$args['pag']},{$args['lim']});";
-
-        $con = $this->container->get('base_datos');
-        $query = $con->prepare($sql);
-
-        //die($sql);
-
-        $query->execute();
-
-        $res = $query->fetchAll();
-
-        $status = $query->rowCount() > 0 ? 200 : 204;
-
-        $query = null;
-        $con = null;
-
-
-        $response->getbody()->write(json_encode($res));
-
-
-        return $response
-            ->withHeader('Content-Type', 'application/json')
-            ->withStatus($status);
+        $resp = $this->filtrarP(self::RECURSO, $datos, $args['pag'], $args['lim']);
+        $response->getBody()->write(json_encode($resp['datos']));
+        return $response->withHeader('Content-type', 'Application/json')->withStatus($resp['status']);
     }
 
 
