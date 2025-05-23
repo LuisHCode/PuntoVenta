@@ -33,22 +33,22 @@ begin
 end$$
 DROP PROCEDURE IF EXISTS rolUsuario$$
 CREATE PROCEDURE rolUsuario (
-    _id int, 
+    _idUsuario varchar(15), 
     _rol int
     ) 
 begin
     update usuario 
         set rol = _rol
-        where id = _id;
+        where idUsuario = _idUsuario;
 end$$
 DROP PROCEDURE IF EXISTS passwUsuario$$
 CREATE PROCEDURE passwUsuario (
-    _id int, 
+    _idUsuario varchar(15), 
     _passw Varchar(255)
     ) 
 begin
     update usuario 
         set passw = _passw
-        where id = _id;
+        where idUsuario = _idUsuario;
 end$$
 DELIMITER ;

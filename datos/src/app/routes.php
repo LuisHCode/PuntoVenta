@@ -38,5 +38,11 @@
             $endpoint->get('/filtrar/{pag}/{lim}', Administrador::class . ':filtrar');
         });
 
+        $api->group('/user',function(RouteCollectorProxy $endpoint){
+            $endpoint->patch('/reset/{idUsuario}', Usuario::class . ':resetPassw');
+            $endpoint->patch('/change/{idUsuario}', Usuario::class . ':changePassw');
+            $endpoint->patch('/rol/{idUsuario}', Usuario::class . ':changeRol');
+        });
+
 
 });

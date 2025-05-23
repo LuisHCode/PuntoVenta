@@ -3,20 +3,13 @@ namespace App\controllers;
 
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
-use Psr\Container\ContainerInterface;
 
 use PDO;
 
 class Cliente extends Persona
 {
-    protected $container;
     private const ROL = 4;
     private const RECURSO = "Cliente";
-
-    public function __construct(ContainerInterface $c)
-    {
-        $this->container = $c;
-    }
 
     public function read(Request $request, Response $response, $args)
     {
