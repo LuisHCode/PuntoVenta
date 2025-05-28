@@ -50,5 +50,6 @@ begin
     update usuario 
         set passw = _passw
         where idUsuario = _idUsuario;
+    SELECT ROW_COUNT();
 end$$
 DELIMITER ;
