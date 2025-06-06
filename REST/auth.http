@@ -1,13 +1,12 @@
 @uriAuth = http://localhost:8000/api/auth
-@token = Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJsb2NhbGhvc3QiLCJpYXQiOjE3NDkyMjM3NjMsImV4cCI6MTc0OTIyNzM2Mywic3ViIjoiMiIsInJvbCI6IjQiLCJub20iOiJKb3NlIn0.8SP_MId62Tnx95bG-NdR_xYsQ3IkvnexQCxvo-qsSAk
-
+@token = Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJsb2NhbGhvc3QiLCJpYXQiOjE3NDkyMjYxMDQsImV4cCI6MTc0OTIyOTcwNCwic3ViIjoiOCIsInJvbCI6IjQiLCJub20iOiJzZGEifQ.kWAWywQ1BACyhyTHYxQ6JXlEkSgknINxoD1n5dhoPDQ
 
 PATCH {{uriAuth}}
 Content-Type: application/json
 
 {
-  "idUsuario": "2",
-  "passw": "2"
+  "idUsuario": "8",
+  "passw": "8"
 }
 
 ###
@@ -15,8 +14,8 @@ PATCH {{uriAuth}}/refrescar
 Content-Type: application/json
 
 {
-  "idUsuario": "2",
-  "tkRef": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJsb2NhbGhvc3QiLCJpYXQiOjE3NDkyMjM3NjMsInJvbCI6IjQiLCJub20iOiJKb3NlIn0.LqJ6oYu1BvrbqQejOIdZ2XCc_l6k_ElX4-peLbuX96Q"
+  "idUsuario": "8",
+  "tkRef": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJsb2NhbGhvc3QiLCJpYXQiOjE3NDkyMjYxMDQsInJvbCI6IjQiLCJub20iOiJzZGEifQ.wmVdlFSGpb01LavUO0aYDEmQs7iEOpvTDwItD2jQNs4"
 }
 
 ###
