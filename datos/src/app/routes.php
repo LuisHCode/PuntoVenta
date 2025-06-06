@@ -47,6 +47,7 @@ $app->group('/api', function (RouteCollectorProxy $api) {
 
     $api->group('/auth', function (RouteCollectorProxy $endpoint) {
         $endpoint->patch('', Auth::class . ':iniciar');
+        $endpoint->patch('/refrescar', Auth::class . ':refrescar');
         $endpoint->delete('/{idUsuario}', Auth::class . ':cerrar');
     });
 

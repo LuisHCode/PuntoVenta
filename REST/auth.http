@@ -1,4 +1,6 @@
 @uriAuth = http://localhost:8000/api/auth
+@token = Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJsb2NhbGhvc3QiLCJpYXQiOjE3NDkyMjM3NjMsImV4cCI6MTc0OTIyNzM2Mywic3ViIjoiMiIsInJvbCI6IjQiLCJub20iOiJKb3NlIn0.8SP_MId62Tnx95bG-NdR_xYsQ3IkvnexQCxvo-qsSAk
+
 
 PATCH {{uriAuth}}
 Content-Type: application/json
@@ -7,6 +9,17 @@ Content-Type: application/json
   "idUsuario": "2",
   "passw": "2"
 }
+
+###
+PATCH {{uriAuth}}/refrescar
+Content-Type: application/json
+
+{
+  "idUsuario": "2",
+  "tkRef": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJsb2NhbGhvc3QiLCJpYXQiOjE3NDkyMjM3NjMsInJvbCI6IjQiLCJub20iOiJKb3NlIn0.LqJ6oYu1BvrbqQejOIdZ2XCc_l6k_ElX4-peLbuX96Q"
+}
+
+###
 
 ###
 
@@ -20,18 +33,16 @@ DELETE {{uriAuth}}/2
 ###
 
 @uriCliente = http://localhost:8000/api/cliente
-@token = eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJsb2NhbGhvc3QiLCJpYXQiOjE3NDkwNTY3MTMsImV4cCI6MTc0OTA1Njc1OCwic3ViIjoiMiIsInJvbCI6IjQiLCJub20iOiJKb3NlIn0.K7M8qrvI-a_-Zpb7itc7nWoCUBuejJ4AttsO6cbdjUU
-
 GET {{uriCliente}}/read
 Content-Type: application/json
-Authorization: Bearer {{token}}
+Authorization: {{token}}
 
 
 ###
 
 POST {{uriCliente}}
 Content-Type: application/json
-Authorization: Bearer {{token}}
+Authorization: {{token}}
 
 {
   "idCliente": 8,
