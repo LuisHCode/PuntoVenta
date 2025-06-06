@@ -9,7 +9,7 @@
 
     class Administrador{
         protected $container;
-        private const ROL= 4;
+        private const ROL= 5;
 
         public function __construct(ContainerInterface $c){
             $this->container = $c;
@@ -55,8 +55,6 @@
             $con->beginTransaction();
             $query = $con->prepare($sql);
 
-
-
             
             foreach($body as $key => $value){
                 $TIPO= gettype($value)=="integer" ? PDO::PARAM_INT : PDO::PARAM_STR;
@@ -74,9 +72,7 @@
                     0 => 201,
                     1 => 409,
                 };
-                //var_dump($status);
-                //die();
-
+              
                 $id = $body->idAdministrador;
 
                 $sql = "SELECT nuevoUsuario(:idUsuario, :rol, :passw);";
@@ -110,52 +106,46 @@
             return $response ->withStatus($status);
         }
 
-        public function update(Request $request, Response $response, $args){
-      
-            $body= json_decode($request->getBody());
+        public function update(Request $request, Response $response, $args) {
+
+            $body = json_decode($request->getBody());
             $sql = "SELECT editarAdministrador(:id,:idAdministrador,:nombre,:apellido1,:apellido2,:telefono,:celular,:direccion,:correo);";
 
-            $con=  $this->container->get('base_datos');
+            $con = $this->container->get('base_datos');
             $con->beginTransaction();
             $query = $con->prepare($sql);
 
-            $value=filter_var($args['id'], FILTER_SANITIZE_SPECIAL_CHARS);
-
+            $value = filter_var($args['id'], FILTER_SANITIZE_SPECIAL_CHARS);
             $query->bindValue(':id', $value, PDO::PARAM_INT);
 
-            foreach($body as $key => $value){
-                $TIPO= gettype($value)=="integer" ? PDO::PARAM_INT : PDO::PARAM_STR;
-                $value=filter_var($value, FILTER_SANITIZE_SPECIAL_CHARS);
+            foreach ($body as $key => $value) {
+                $TIPO = gettype($value) == "integer" ? PDO::PARAM_INT : PDO::PARAM_STR;
+                $value = filter_var($value, FILTER_SANITIZE_SPECIAL_CHARS);
                 $query->bindValue($key, $value, $TIPO);
-            };
+            }
 
-            try{
+            try {
                 $query->execute();
                 $con->commit();
-                $res= $query->fetch(PDO::FETCH_NUM)[0];
-                $status= match($res) {
+                $res = $query->fetch(PDO::FETCH_NUM)[0];
+                $status = match ($res) {
                     0 => 404,
                     1 => 200,
                 };
-
-            } catch(PDOException $e){
-                $status= 500;
+            } catch (PDOException $e) {
+                $status = 500;
                 $con->rollBack();
             }
 
-            $query=null;
-            $con=null;
+            $query = null;
+            $con = null;
 
-
-            return $response ->withStatus($status);
-       
-
-           
+            return $response->withStatus($status);
         }
 
-       public function delete(Request $request, Response $response, $args){
-            
 
+        public function delete(Request $request, Response $response, $args){
+            
             $sql = "SELECT eliminarAdministrador(:id);";
             $con=  $this->container->get('base_datos');
 
@@ -174,9 +164,9 @@
             return $response ->withStatus($status);
         }
 
-          public function filtrar(Request $request, Response $response, $args){
-            // %serie%&%modelo%&%marca%&%categoria%&
+        public function filtrar(Request $request, Response $response, $args){
 
+            // %idAdministrador%&%nombre%&%apellido1%&%apellido2%&
             $datos= $request->getQueryParams();
             $filtro= "%";
             foreach($datos as $key => $value){
@@ -208,6 +198,7 @@
                 ->withHeader('Content-Type', 'application/json')
                 ->withStatus($status);
         }
+
 
 
     }

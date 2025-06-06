@@ -1,4 +1,4 @@
-FROM php:8.2-apache
+FROM php:8.3-apache
 
 WORKDIR /var/www/html
 
@@ -13,6 +13,7 @@ mv composer.phar /usr/local/bin/composer
 
 COPY ./datos/composer.json .
 COPY ./datos/.htaccess .
+COPY ./datos/.env .
 
 RUN apt-get update && apt-get install -y zip
 RUN apt-get update && apt-get install -y git
