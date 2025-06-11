@@ -19,7 +19,7 @@ require 'config.php';
 $app->add(new Tuupola\Middleware\JwtAuthentication([
   "secure" => false,
   "path" => ["/api"],
-  "ignore" => ["/api/auth"],
+  "ignore" => ["/api/auth", "/api/cliente"],
   "secret" => ["acme" => $container->get('key')],
   "algorithm" => ["acme" => "HS256"],
 ]));

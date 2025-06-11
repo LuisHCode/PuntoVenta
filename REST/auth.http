@@ -44,7 +44,7 @@ Content-Type: application/json
 Authorization: {{token}}
 
 {
-  "idCliente": 8,
+  "idCliente": 3,
   "nombre": "sda",
   "apellido1": "asda",
   "apellido2": "asd",
