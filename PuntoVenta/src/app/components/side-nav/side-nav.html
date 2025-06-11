@@ -1,7 +1,7 @@
 <button
-  data-drawer-target="sidebar-multi-level-sidebar"
-  data-drawer-toggle="sidebar-multi-level-sidebar"
-  aria-controls="sidebar-multi-level-sidebar"
+  data-drawer-target="default-sidebar"
+  data-drawer-toggle="default-sidebar"
+  aria-controls="default-sidebar"
   type="button"
   class="inline-flex items-center p-2 mt-2 ms-3 text-sm text-gray-500 rounded-lg sm:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
 >
@@ -22,17 +22,17 @@
 </button>
 
 <aside
-  id="sidebar-multi-level-sidebar"
-  class="fixed top-0 left-0 z-40 w-64 h-screen transition-transform -translate-x-full sm:translate-x-0"
+  id="default-sidebar"
+  class="w-64 h-screen transition-transform -translate-x-full sm:translate-x-0"
   aria-label="Sidebar"
 >
   <div class="h-full px-3 py-4 overflow-y-auto bg-gray-50 dark:bg-gray-800">
     <mat-nav-list>
-        @for(item of menuItem(); track item.label){
-            <a
+      @for(item of menuItem();track item.label){
+      <a
         href=""
-        [routerLink] = "item.route"
-        class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
+        [routerLink]="item.route"
+        class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-300 dark:hover:bg-gray-700 group"
       >
         <mat-icon
           matListItemIcon
@@ -42,8 +42,7 @@
         </mat-icon>
         <span class="flex-1 ms-3 whitespace-nowrap">{{item.label}}</span>
       </a>
-        }      
+      }
     </mat-nav-list>
-
   </div>
 </aside>
