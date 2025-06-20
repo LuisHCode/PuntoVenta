@@ -36,6 +36,10 @@ GET {{uriCliente}}/read
 Content-Type: application/json
 Authorization: {{token}}
 
+###
+
+GET {{uriCliente}}/4
+Content-Type: application/json
 
 ###
 

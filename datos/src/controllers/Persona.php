@@ -152,8 +152,8 @@ class Persona
         }
         $filtro = substr($filtro, 0, -1);
 
-        $sql = "CALL filtrar$recurso('$filtro', $pag, $lim);";
 
+        $sql = "CALL filtrar$recurso('$filtro', $pag, $lim);";
         $con = $this->container->get('base_datos');
         $query = $con->prepare($sql);
 
@@ -168,4 +168,20 @@ class Persona
 
     }
 
+        public function buscarP($recurso, $id)
+    {
+        $sql = "CALL buscar$recurso($id, '');";
+        $con = $this->container->get('base_datos');
+        $query = $con->prepare($sql);
+
+        $query->execute();
+        $res = $query->fetch(PDO::FETCH_ASSOC);
+        $status = $query->rowCount() > 0 ? 200 : 204;
+
+        $query = null;
+        $con = null;
+
+        return ["datos" => $res, "status" => $status];
+
+    }
 }

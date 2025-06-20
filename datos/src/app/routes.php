@@ -23,7 +23,7 @@ $app->group('/api', function (RouteCollectorProxy $api) {
 
 
     $api->group('/cliente', function (RouteCollectorProxy $endpoint) {
-        $endpoint->get('/read[/{id}]', Cliente::class . ':read');
+        $endpoint->get('/{id}', Cliente::class . ':buscar');
         $endpoint->post('', Cliente::class . ':create');
         $endpoint->put('/{id}', Cliente::class . ':update');
         $endpoint->delete('/{id}', Cliente::class . ':delete');
