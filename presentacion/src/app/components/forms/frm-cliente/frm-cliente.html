@@ -1,0 +1,50 @@
+<h2 mat-dialog-title>Formulario Cliente</h2>
+<mat-dialog-content>
+  <form id="FormularioCliente" [formGroup]="myForm" (ngSubmit)="onGuardar();">
+    <div class="flex flex-col">
+      <mat-form-field>
+        <mat-label>Id Cliente</mat-label>
+        <input formControlName="idCliente" type="text" matInput />
+      </mat-form-field>
+      <div class="md:flex justify-between">
+        <mat-form-field class="w-full md: w-fit">
+          <mat-label>Nombre</mat-label>
+          <input formControlName="nombre" type="text" matInput />
+        </mat-form-field>
+        <mat-form-field class="w-full md: w-fit">
+          <mat-label>Primer Apellido</mat-label>
+          <input formControlName="apellido1" type="text" matInput />
+        </mat-form-field>
+        <mat-form-field class="w-full md: w-fit">
+          <mat-label>Segundo Apellido</mat-label>
+          <input formControlName="apellido2" type="text" matInput />
+        </mat-form-field>
+      </div>
+      <mat-form-field class="w-full md: w-fit">
+        <mat-label>Telefono</mat-label>
+        <input formControlName="telefono" type="text" matInput />
+      </mat-form-field>
+      <mat-form-field class="w-full md: w-fit">
+        <mat-label>Celular</mat-label>
+        <input formControlName="celular" type="text" matInput />
+      </mat-form-field>
+      <mat-form-field class="w-full md: w-fit">
+        <mat-label>Correo</mat-label>
+        <input formControlName="correo" type="text" matInput />
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Direccion</mat-label>
+        <textarea formControlName="direccion" matInput></textarea>
+      </mat-form-field>
+    </div>
+    <input type="hidden" formControlName="id" />
+  </form>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button type="submit" form="FormularioCliente" mat-button>
+    <mat-icon>save</mat-icon> Guardar
+  </button>
+  <button mat-button [mat-dialog-close]="false">
+    <mat-icon>cancel</mat-icon> Cerrar
+  </button>
+</mat-dialog-actions>
