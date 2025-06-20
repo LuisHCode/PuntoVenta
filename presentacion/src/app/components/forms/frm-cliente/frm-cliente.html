@@ -20,6 +20,16 @@
           <input formControlName="apellido2" type="text" matInput />
         </mat-form-field>
       </div>
+      @if (F['nombre'].invalid && F['nombre'].touched) {
+      @if(F['nombre'].errors!['required']){
+      <small class="text-red-700">Nombre es obligatorio</small>
+      } @if(F['nombre'].errors!['minlength']) {
+      <small class="text-red-700">Se necesita de 2 a 30 carácteres</small>
+      }@if(F['nombre'].errors!['maxlength']) {
+      <small class="text-red-700">Se necesita de 2 a 30 carácteres</small>
+      } @if(F['nombre'].errors!['pattern']) {
+      <small class="text-red-700">Carácter inválido</small>
+      } }
       <mat-form-field class="w-full md: w-fit">
         <mat-label>Telefono</mat-label>
         <input formControlName="telefono" type="text" matInput />

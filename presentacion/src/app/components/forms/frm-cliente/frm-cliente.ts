@@ -8,7 +8,12 @@ import {
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
-import { ReactiveFormsModule, FormBuilder, FormGroup } from '@angular/forms';
+import {
+  ReactiveFormsModule,
+  FormBuilder,
+  FormGroup,
+  Validators,
+} from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { ClienteService } from '../../../shared/services/cliente-service';
 import { DialogoGeneral } from '../dialogo-general/dialogo-general';
@@ -40,15 +45,51 @@ export class FrmCliente implements OnInit {
   constructor() {
     this.myForm = this.builder.group({
       id: [0],
-      idCliente: [''],
-      nombre: [''],
-      apellido1: [''],
-      apellido2: [''],
-      telefono: [''],
-      celular: [''],
-      direccion: [''],
-      correo: [''],
+      idCliente: [
+        '',
+        [
+          Validators.required,
+          Validators.minLength(9),
+          Validators.maxLength(15),
+          Validators.pattern('[0-9]*'),
+        ],
+      ],
+      nombre: [
+        '',
+        [
+          Validators.required,
+          Validators.minLength(3),
+          Validators.maxLength(30),
+          Validators.pattern('^[A-Za-zÑñáéíóúÁÉÍÓÚ ]+$'),
+        ],
+      ],
+      apellido1: [
+        '',
+        [
+          Validators.required,
+          Validators.minLength(3),
+          Validators.maxLength(30),
+          Validators.pattern('^[A-Za-zÑñáéíóúÁÉÍÓÚ ]+$'),
+        ],
+      ],
+      apellido2: [
+        '',
+        [
+          Validators.required,
+          Validators.minLength(3),
+          Validators.maxLength(30),
+          Validators.pattern('^[A-Za-zÑñáéíóúÁÉÍÓÚ ]+$'),
+        ],
+      ],
+      telefono: ['', Validators.pattern('[0-9]{8}')],
+      celular: ['', [Validators.required, Validators.pattern('[0-9]{8}')]],
+      direccion: ['', [Validators.minLength(10), Validators.maxLength(255)]],
+      correo: ['', [Validators.required, Validators.email]],
     });
+  }
+
+  get F() {
+    return this.myForm.controls;
   }
   onGuardar() {
     if (this.myForm.value.id === 0) {
