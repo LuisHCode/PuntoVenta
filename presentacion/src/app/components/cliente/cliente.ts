@@ -1,4 +1,10 @@
-import { AfterViewInit, Component, inject, signal } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  inject,
+  signal,
+  ViewChild,
+} from '@angular/core';
 import { TipoCliente } from '../../shared/models/interfaces';
 import { ClienteService } from '../../shared/services/cliente-service';
 import { MatCardModule } from '@angular/material/card';
@@ -8,10 +14,22 @@ import { MatDialog } from '@angular/material/dialog';
 import { FrmCliente } from '../forms/frm-cliente/frm-cliente';
 import { DialogoGeneral } from '../forms/dialogo-general/dialogo-general';
 import { UsuarioService } from '../../shared/services/usuario-service';
+import { MatExpansionModule } from '@angular/material/expansion';
+import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
+import { MatInputModule } from '@angular/material/input';
+import { MatFormFieldModule } from '@angular/material/form-field';
 
 @Component({
   selector: 'app-cliente',
-  imports: [MatCardModule, MatTableModule, MatIconModule],
+  imports: [
+    MatCardModule,
+    MatTableModule,
+    MatIconModule,
+    MatExpansionModule,
+    MatPaginatorModule,
+    MatFormFieldModule,
+    MatInputModule,
+  ],
   templateUrl: './cliente.html',
   styleUrl: './cliente.css',
 })
@@ -19,6 +37,9 @@ export class Cliente implements AfterViewInit {
   private readonly clienteSrv = inject(ClienteService);
   private readonly dialogo = inject(MatDialog);
   private readonly usuarioSrv = inject(UsuarioService);
+
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
+  panelOpenState = signal(false);
   columnas: string[] = [
     'idCliente',
     'nombre',
@@ -68,6 +89,14 @@ export class Cliente implements AfterViewInit {
     });
   }
 
+  limpiar() {
+    this.resetearFiltro();
+    (document.querySelector('#fidUsuario') as HTMLInputElement).value = '';
+    (document.querySelector('#fnombre') as HTMLInputElement).value = '';
+    (document.querySelector('#fapellido1') as HTMLInputElement).value = '';
+    (document.querySelector('#fapellido2') as HTMLInputElement).value = '';
+  }
+
   onNuevo() {
     this.mostrarDialogo('Nuevo Cliente');
   }
@@ -82,6 +111,11 @@ export class Cliente implements AfterViewInit {
 
   onInfo(id: number) {}
 
+  onFiltroOnChange(f: any) {
+    this.filtro = f;
+    this.filtrar();
+  }
+
   onResetearPassword(id: number) {
     this.clienteSrv.buscar(id).subscribe({
       next: (data) => {
@@ -95,16 +129,18 @@ export class Cliente implements AfterViewInit {
         });
         dialogRef.afterClosed().subscribe((result) => {
           if (result === true) {
-            this.usuarioSrv.resetearPassw(data.idCliente).subscribe((res: any) => {
-              //crear el resetear el filtro
-              this.dialogo.open(DialogoGeneral, {
-                data: {
-                  texto: 'Contraseña Restablecida',
-                  icono: 'check',
-                  textoAceptar: 'Aceptar',
-                },
+            this.usuarioSrv
+              .resetearPassw(data.idCliente)
+              .subscribe((res: any) => {
+                //crear el resetear el filtro
+                this.dialogo.open(DialogoGeneral, {
+                  data: {
+                    texto: 'Contraseña Restablecida',
+                    icono: 'check',
+                    textoAceptar: 'Aceptar',
+                  },
+                });
               });
-            });
           }
         });
       },

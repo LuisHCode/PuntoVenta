@@ -9,6 +9,70 @@
     </mat-card-header>
 
     <mat-card-content class="relative overflow-x-auto shadow-md sm:rounded-lg">
+      <mat-expansion-panel (opened)="panelOpenState.set(true)" (closed)="panelOpenState.set(false); limpiar();">
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            Filtrar - Click para {{panelOpenState()? 'Cerrar' : 'Abrir'}}
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+        <mat-form-field>
+          <mat-label>id Cliente</mat-label>
+          <input
+            matInput
+            #fidUsuario
+            id="fidUsuario"
+            (keyup)="onFiltroOnChange({
+            idUsuario : fidUsuario.value,
+            nombre  : fnombre.value,
+            apellido1 : fapellido1.value,
+            apellido2 : fapellido2.value
+          });"
+          />
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>Nombre</mat-label>
+          <input
+            matInput
+            #fnombre
+            id="fnombre"
+            (keyup)="onFiltroOnChange({
+            idUsuario : fidUsuario.value,
+            nombre  : fnombre.value,
+            apellido1 : fapellido1.value,
+            apellido2 : fapellido2.value
+          });"
+          />
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>Primer Apellido</mat-label>
+          <input
+            matInput
+            #fapellido1
+            id="fapellido1"
+            (keyup)="onFiltroOnChange({
+            idUsuario : fidUsuario.value,
+            nombre  : fnombre.value,
+            apellido1 : fapellido1.value,
+            apellido2 : fapellido2.value
+          });"
+          />
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>Segundo Apellido</mat-label>
+          <input
+            matInput
+            #fapellido2
+            id="fapellido2"
+            (keyup)="onFiltroOnChange({
+            idUsuario : fidUsuario.value,
+            nombre  : fnombre.value,
+            apellido1 : fapellido1.value,
+            apellido2 : fapellido2.value
+          });"
+          />
+        </mat-form-field>
+      </mat-expansion-panel>
+
       <!-- table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400"-->
       <table mat-table [dataSource]="dataSource()">
         <thead
