@@ -50,6 +50,11 @@ export class SideNav {
       icon: 'manage_accounts',
       label: 'Administradores',
       route: 'admin'
+    },
+    {
+      icon: 'key',
+      label: 'Login',
+      route: 'login'
     }
   ]);
 }

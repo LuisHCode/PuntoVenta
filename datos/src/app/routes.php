@@ -40,6 +40,7 @@ $app->group('/api', function (RouteCollectorProxy $api) {
     });
 
     $api->group('/user', function (RouteCollectorProxy $endpoint) {
+        $endpoint->get('/{id}', Usuario::class . ':buscar');
         $endpoint->patch('/reset/{idUsuario}', Usuario::class . ':resetPassw');
         $endpoint->patch('/change/{idUsuario}', Usuario::class . ':changePassw');
         $endpoint->patch('/rol/{idUsuario}', Usuario::class . ':changeRol');
