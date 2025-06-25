@@ -10,8 +10,8 @@ export class UsuarioService {
   private readonly http = inject(HttpClient);
   constructor() {}
 
-  resetearPassw(idUsuario: number) {
-    return this.http.patch<any>(`${_SERVER}/api/user${idUsuario}`, {}).pipe(
+  resetearPassw(id: string) {
+    return this.http.patch<any>(`${_SERVER}/api/user/reset/${id}`, {}).pipe(
       map(() => true),
       catchError((error) => {
         return of(error.status);

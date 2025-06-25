@@ -7,6 +7,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatDialog } from '@angular/material/dialog';
 import { FrmCliente } from '../forms/frm-cliente/frm-cliente';
 import { DialogoGeneral } from '../forms/dialogo-general/dialogo-general';
+import { UsuarioService } from '../../shared/services/usuario-service';
 
 @Component({
   selector: 'app-cliente',
@@ -17,6 +18,7 @@ import { DialogoGeneral } from '../forms/dialogo-general/dialogo-general';
 export class Cliente implements AfterViewInit {
   private readonly clienteSrv = inject(ClienteService);
   private readonly dialogo = inject(MatDialog);
+  private readonly usuarioSrv = inject(UsuarioService);
   columnas: string[] = [
     'idCliente',
     'nombre',
@@ -80,7 +82,34 @@ export class Cliente implements AfterViewInit {
 
   onInfo(id: number) {}
 
-  onResetearPassword(id: number) {}
+  onResetearPassword(id: number) {
+    this.clienteSrv.buscar(id).subscribe({
+      next: (data) => {
+        const dialogRef = this.dialogo.open(DialogoGeneral, {
+          data: {
+            texto: `¿Desea resetear la contraseña de ${data.nombre}?`,
+            icono: 'question_mark',
+            textoAceptar: 'Si',
+            textoCancelar: 'No',
+          },
+        });
+        dialogRef.afterClosed().subscribe((result) => {
+          if (result === true) {
+            this.usuarioSrv.resetearPassw(data.idCliente).subscribe((res: any) => {
+              //crear el resetear el filtro
+              this.dialogo.open(DialogoGeneral, {
+                data: {
+                  texto: 'Contraseña Restablecida',
+                  icono: 'check',
+                  textoAceptar: 'Aceptar',
+                },
+              });
+            });
+          }
+        });
+      },
+    });
+  }
 
   onEliminar(id: number) {
     const dialogRef = this.dialogo.open(DialogoGeneral, {
